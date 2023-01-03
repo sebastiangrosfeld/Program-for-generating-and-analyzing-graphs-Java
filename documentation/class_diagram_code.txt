@@ -1,0 +1,164 @@
+classDiagram
+    direction TB
+    Scene <|-- MainScene
+    Scene <|-- PathsScene
+    Alert <|-- ErrorAlert
+    Pane <|-- GraphView
+    Pane <|-- Settings
+    MainScene *-- GraphView
+    MainScene *-- GenerationSettings
+    MainScene *-- AnalizationSettings
+    Application <|-- Main
+    Graph *-- BFS
+    Main *-- MainScene
+    Main *-- PathsScene
+    Graph *-- FileHandler
+    Main *-- Graph
+    Graph o-- Path
+    Graph *-- Dijkstra
+    Settings <|-- GenerationSettings
+    Settings <|-- AnalizationSettings
+    GraphView o-- Node
+    Node o-- Edge
+    Group <|-- Node
+    Group <|-- Edge
+
+    class Graph {
+        -int rows
+        -int columns
+        -double[][] adjacencyList
+        -ArrayList~Path~ paths
+        -BFS bfs
+        -Dijkstra dijkstra
+        -FileHandler fileHandler
+        +getNodesCount() int
+        +generateWages(double minWage, double maxWage)
+        +generateConsistent(double minWage, double maxWage)
+        +generateRandom(double minWage, double maxWage)
+        +checkConsistency()
+        +findPaths()
+        +readFromFile(String filename)
+        +writeToFile(String filename)
+    }
+
+    class FileHandler {
+        +readFile(String filename) double[][]
+        +writeFile(String filename, Graph graph)
+    }
+
+    class BFS {
+        +checkConsistency(Graph graph) boolean
+    }
+
+    class Dijkstra {
+        +findPath(Graph graph, Path path)
+    }
+
+    class Pane {
+
+    }
+
+    class Scene {
+
+    }
+
+    class Alert {
+
+    }
+
+    class MainScene {
+        -Graph graph
+        -GraphView graphView
+        -Settings generationSettings
+        -Settings analizationSettings
+        +initialize()
+    }
+
+    class PathsScene {
+        -Graph graph
+        +initialize()
+    }
+
+    class ErrorAlert {
+        +showError(String title, String message)$
+    }
+
+    class GraphView {
+        -Graph graph
+        -Node[][] nodes
+        +initialize()
+        +drawGraph()
+        +drawPaths()
+    }
+
+    class GenerationSettings {
+        -TextField filenameTextField
+        -ToggleGroup generationModeToggleGroup
+        -TextField rowsTextField
+        -TextField columnsTextField
+        -TextField minWageTextField
+        -TextField maxWageTextField
+        +initialize()
+        +getFilename() String
+        +getRowsCount() int
+        +getColumnsCount() int
+        +getMinWage() double
+        +getMaxWage() double
+    }
+
+    class AnalizationSettings {
+        -TextField filenameTextField
+        +initialize()
+        +getFilename() String
+    }
+
+    class Application {
+
+    }
+
+    class Main {
+        -Stage stage
+        -Scene mainScene
+        -Scene pathsScene
+        -Graph graph
+        +switchToMainScene()
+        +switchToPathsScene()
+        +start()
+        +main(String[] args)$
+    }
+
+    class Path {
+        -int source
+        -int destination
+        -int id
+        -boolean showWages
+        -boolean display
+        -ArrayList~int~ nodesSequence
+    }
+
+    class Settings {
+        #Graph graph
+        #GraphView graphView
+        +initialize()
+    }
+    <<abstract>> Settings
+
+    class Node {
+        -Color color
+        -Edge[] edges
+        +create(Graph graph, int nodeIndex)
+    }
+
+    class Edge {
+        -Color color
+        -double wage
+        -Label wageLabel
+        +create()
+        +showWage()
+        +hideWage()
+    }
+
+    class Group {
+
+    }
+    
